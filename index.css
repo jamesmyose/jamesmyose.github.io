@@ -1,5 +1,5 @@
 body{
-    background-color: #3AAFA9;
+    background-color: #28AFB0;
     /*
     background-color: #c5c1c0;
     background-color: #050401;
@@ -87,7 +87,7 @@ body{
 
     position: relative;
     max-width: 50%;
-    height: 200em;
+    height: 30em;
     z-index: 1;
     top: 0;
     overflow-x: hidden;
@@ -103,7 +103,7 @@ body{
 .splitright{
     position: relative;
     max-width: 50%;
-    height: 200em;
+    height: 30em;
     z-index: 1;
     top: 0;
     overflow-x: hidden;
