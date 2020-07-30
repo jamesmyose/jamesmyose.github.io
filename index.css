@@ -14,10 +14,10 @@ Alternative:
 F4D35E
 EE964B
 */
+
 body{
     line-height: 1.2em;
     margin: 0;
-    height: 200em;
 
     background-color: #3AAFA9;
     /*
@@ -96,6 +96,11 @@ body{
 .main{
     padding: 0 1em;
     color: #fff;
+}
+
+#board1{
+    padding: 1em 1em;
+    float: left;
 }
 
 /*
