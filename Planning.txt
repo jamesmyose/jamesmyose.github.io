@@ -10,3 +10,4 @@ interactive (drag pieces)
 allow for pieces in way
 able to see how many with other pieces moves factored in
 be able to target a square and show multiple paths to it, especially if other pieces need to be moved
+allow multiple knights
