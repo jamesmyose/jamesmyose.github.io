@@ -68,7 +68,7 @@ body{
 }
 
 #nav a{
-    padding-right:15px;
+    padding-right: 15px;
 	color: #fff;
 	text-decoration: none;
 }
@@ -99,7 +99,7 @@ body{
 }
 
 #board1{
-    padding: 1em 1em;
+    padding: 1em;
     float: left;
 }
 
