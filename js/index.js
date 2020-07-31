@@ -43,57 +43,20 @@ function onDragStart (source, piece) {
     return false
   }
 }
-function onDrop (source, target, piece, newPos, oldPos, orientation) {
-    removeGreySquares()
-    game.update_board(Chessboard.objToFen(newPos))
-    board.position(Chessboard.objToFen(newPos))
-    console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
-    console.log('Source: ' + source)
-    console.log('Target: ' + target)
-    console.log('Piece: ' + piece)
-    console.log('New position: ' + Chessboard.objToFen(newPos))
-    console.log('Old position: ' + Chessboard.objToFen(oldPos))
-    console.log('Orientation: ' + orientation)
-    console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
-    var moves = game.moves({
-      square: target,
-      verbose: true
-    })
 
-    // exit if there are no moves available for this square
-    if (moves.length === 0) {
-        console.log('no moves')
-        return
-    }
-
-    // highlight the square they moused over
-    greySquare(target)
-
-    // highlight the possible squares for this piece
-    for (var i = 0; i < moves.length; i++) {
-      greySquare(moves[i].to)
-    }
-
-
-
-}
-
-/*
 function onDrop (source, target) {
   removeGreySquares()
 
-  // line 1750 in chess.js
   // see if the move is legal
   var move = game.move({
     from: source,
     to: target,
-    promotion: 'q' // NOTE: always promote to a queen for example simplicity
-  })
+    promotion: 'q', // NOTE: always promote to a queen for example simplicity
+    }, {legal: false})
 
   // illegal move
   if (move === null) return 'snapback'
 }
-*/
 
 function onMouseoverSquare (square, piece) {
   // get list of possible moves for this square
@@ -129,6 +92,6 @@ var config = {
   onDrop: onDrop,
   onMouseoutSquare: onMouseoutSquare,
   onMouseoverSquare: onMouseoverSquare,
-  onSnapEnd: onSnapEnd
+  // onSnapEnd: onSnapEnd
 }
 board = Chessboard('myBoard', config)

@@ -544,7 +544,7 @@ var Chess = function(fen) {
       typeof options !== 'undefined' && 'legal' in options
         ? options.legal
         : true
-
+    console.log('gen move legal: ' + legal)
     /* are we generating moves for a single square? */
     if (typeof options !== 'undefined' && 'square' in options) {
       if (options.square in SQUARES) {
@@ -658,7 +658,7 @@ var Chess = function(fen) {
      * to be captured)
      */
     if (!legal) {
-        return moves
+      return moves
     }
 
     /* filter out illegal moves */
@@ -1765,12 +1765,18 @@ var Chess = function(fen) {
           ? options.sloppy
           : false
 
+      var legal =
+        typeof options !== 'undefined' && 'legal' in options
+          ? options.legal
+          : true
+      console.log('legal: ' + legal)
+
       var move_obj = null
 
       if (typeof move === 'string') {
         move_obj = move_from_san(move, sloppy)
       } else if (typeof move === 'object') {
-        var moves = generate_moves()
+        var moves = generate_moves({legal: legal})
 
         /* convert the pretty move object to an ugly move object */
         for (var i = 0, len = moves.length; i < len; i++) {
@@ -1788,6 +1794,7 @@ var Chess = function(fen) {
 
       /* failed to find move */
       if (!move_obj) {
+        console.log('no move')
         return null
       }
 
@@ -1889,13 +1896,7 @@ var Chess = function(fen) {
           delete comments[fen];
           return {fen: fen, comment: comment};
         });
-    },
-
-    // added by JamesMyose
-    update_board: function(pos) {
-        update_setup(pos)
-        console.log(pos)
-    },
+    }
   }
 }
 
