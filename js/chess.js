@@ -544,7 +544,7 @@ var Chess = function(fen) {
       typeof options !== 'undefined' && 'legal' in options
         ? options.legal
         : true
-    console.log('gen move legal: ' + legal)
+
     /* are we generating moves for a single square? */
     if (typeof options !== 'undefined' && 'square' in options) {
       if (options.square in SQUARES) {
@@ -1765,18 +1765,13 @@ var Chess = function(fen) {
           ? options.sloppy
           : false
 
-      var legal =
-        typeof options !== 'undefined' && 'legal' in options
-          ? options.legal
-          : true
-      console.log('legal: ' + legal)
-
       var move_obj = null
 
       if (typeof move === 'string') {
         move_obj = move_from_san(move, sloppy)
       } else if (typeof move === 'object') {
-        var moves = generate_moves({legal: legal})
+        var moves = generate_moves()
+        console.log(moves)
 
         /* convert the pretty move object to an ugly move object */
         for (var i = 0, len = moves.length; i < len; i++) {
@@ -1794,7 +1789,6 @@ var Chess = function(fen) {
 
       /* failed to find move */
       if (!move_obj) {
-        console.log('no move')
         return null
       }
 
@@ -1896,6 +1890,23 @@ var Chess = function(fen) {
           delete comments[fen];
           return {fen: fen, comment: comment};
         });
+    },
+
+    // added:
+    make_move: function(move) {
+      console.log(board)
+      make_move({from: move.source, to: move.target})
+    },
+    update: function(fen) {
+      update_setup(fen)
+      console.log(fen)
+    },
+    stuff: function(object) {
+      var first_sq = SQUARES.a8
+      var last_sq = SQUARES.h1
+      for (var i = first_sq; i <= last_sq; i++) {
+
+      }
     }
   }
 }

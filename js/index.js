@@ -47,15 +47,19 @@ function onDragStart (source, piece) {
 function onDrop (source, target) {
   removeGreySquares()
 
+
+  // game.make_move({source: source, target: target})
+
   // see if the move is legal
   var move = game.move({
     from: source,
     to: target,
     promotion: 'q', // NOTE: always promote to a queen for example simplicity
-    }, {legal: false})
+    })
 
   // illegal move
   if (move === null) return 'snapback'
+
 }
 
 function onMouseoverSquare (square, piece) {
@@ -81,8 +85,12 @@ function onMouseoutSquare (square, piece) {
   removeGreySquares()
 }
 
-function onSnapEnd () {
-  board.position(game.fen())
+function onSnapEnd (draggedPieceSource, square, draggedPiece, currentPosition) {
+  console.log(draggedPieceSource)
+  console.log(square)
+  console.log(draggedPiece)
+  //game.update(board.fen())
+  //board.position(game.fen())
 }
 
 var config = {
@@ -92,6 +100,6 @@ var config = {
   onDrop: onDrop,
   onMouseoutSquare: onMouseoutSquare,
   onMouseoverSquare: onMouseoverSquare,
-  // onSnapEnd: onSnapEnd
+  onSnapEnd: onSnapEnd
 }
 board = Chessboard('myBoard', config)
