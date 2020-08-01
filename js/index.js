@@ -1,4 +1,14 @@
 // Knight Move Visualizer
+
+/* Issues:
+If a piece just got moved, highlighting bugs if another piece is moved too quickly after the first piece
+Highlighting doesn't work with king
+Highlighting only works for white pieces
+Highlighting only works for one piece
+Invisible Knights don't get removed after highlighting
+Castling, en passant, and promotion don't work
+*/
+
 /*
 var config = {
     draggable: true,
@@ -9,7 +19,7 @@ var config = {
 var board = Chessboard('myBoard', config);
 */
 var startFen = '8/8/8/8/8/8/8/1N6'
-// var startFen = "start"
+var startFen = "start"
 
 var board = null
 var game = null
@@ -103,6 +113,7 @@ function highlight (square, numMoves, piece) {
     game.put({type: piece, color: 'w'}, moves[i].to)
     setTimeout(highlight, 500, moves[i].to, numMoves, piece)
   }
+
   // work on later: visual animation for moving knight to squares
   // updateFen = game.fen().substring(0, game.fen().length - 1)
   // board.position(updateFen, true)
@@ -142,6 +153,12 @@ var config = {
   onSnapbackEnd: onSnapbackEnd,
 }
 board = Chessboard('myBoard', config)
+
+$('#setKnight').on('click', function () {
+  board.position('8/8/8/8/8/8/8/1N6')
+})
+
+$('#setStartBtn').on('click', board.start)
 
 
 // Highlight Legal Moves Example from chessboardjs.com
