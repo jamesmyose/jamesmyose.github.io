@@ -8,43 +8,87 @@ var config = {
 }
 var board = Chessboard('myBoard', config);
 */
+var startFen = '8/8/8/8/8/8/8/1N6'
+// var startFen = "start"
+
 var board = null
-var game = new Chess('8/8/8/8/8/8/8/1N6 w - - 0 1')
+var game = null
+if (startFen === 'start') {
+  game = new Chess()
+}
+else {
+  game = new Chess(startFen.concat(' w - - 0 1'))
+}
+
+// don't need:
 var whiteSquareGrey = '#a9a9a9'
 var blackSquareGrey = '#696969'
+
+// for coloring:
+const startNumMoves = 0
+var colors = {
+  0: '#6A9946',
+  1: '#8AA946',
+  2: '#AAB946',
+  3: '#E9D846',
+  4: '#E99946',
+  5: '#E97946',
+  6: '#E95946',
+}
+/*
+var whiteColors = {
+  0: '#78AD5B',
+  1: '#78EC5B',
+  2: '#F8EC5B',
+  3: '#F8CC5B',
+  4: '#F8BF5B',
+  5: '#F86D5B',
+};
+
+var blackColors = {
+  0: '#5B8432',
+  1: '#5BC432',
+  2: '#DAC432',
+  3: '#DAA432',
+  4: '#DA9732',
+  5: '#DA4432',
+}
+*/
 
 function removeGreySquares () {
   $('#myBoard .square-55d63').css('background', '')
 }
 
-function greySquare (square) {
+function greySquare (square, numMoves) {
   var $square = $('#myBoard .square-' + square)
 
-  var background = whiteSquareGrey
+  /*
+  // var background = whiteSquareGrey
+  var background = whiteColors[rank]
   if ($square.hasClass('black-3c85d')) {
-    background = blackSquareGrey
+    // background = blackSquareGrey
+    background = blackColors[rank]
   }
+  */
 
-  $square.css('background', background)
+  $square.css('background', colors[numMoves])
 }
 
-function onDrop (source, target) {
+function onDrop (source, target, piece) {
   removeGreySquares()
 }
 
-function highlight (square) {
+function highlight (square, numMoves, piece) {
+
   // highlight the square they moused over
-  greySquare(square)
+  greySquare(square, numMoves)
 
   // get list of possible moves for this square
   var moves = game.moves({
     square: square,
-    verbose: true
+    verbose: true,
+    legal: false,
   })
-
-  if (moves.length === 0) {
-    game.remove(square)
-  }
 
   /*
   // highlight the possible squares for this piece
@@ -53,11 +97,15 @@ function highlight (square) {
   }
   */
 
+  numMoves++
+  console.log(piece)
   for (var i = 0; i < moves.length; i++) {
-    console.log(moves[i].to)
-    game.put({type: 'n', color: 'w'}, moves[i].to)
-    setTimeout(highlight, 500, moves[i].to)
+    game.put({type: piece, color: 'w'}, moves[i].to)
+    setTimeout(highlight, 500, moves[i].to, numMoves, piece)
   }
+  // work on later: visual animation for moving knight to squares
+  // updateFen = game.fen().substring(0, game.fen().length - 1)
+  // board.position(updateFen, true)
 
   // exit if there are no moves available for this square
   if (moves.length === 0) return
@@ -71,16 +119,21 @@ function onSnapEnd (draggedPieceSource, square, draggedPiece, currentPosition) {
   var currentBoard = board.fen().concat(' w - - 0 1')
   game.load(currentBoard)
 
-  highlight (square)
+  // chessboard.js has different notation (e.g. white knight is wN instead of n)
+  var piece = draggedPiece.substr(1).toLowerCase();
+
+  highlight (square, startNumMoves, piece)
 }
 
-function onSnapbackEnd (piece, square) {
-  highlight (square)
+function onSnapbackEnd (draggedPiece, square) {
+  var piece = draggedPiece.substr(1).toLowerCase();
+  highlight (square, startNumMoves, piece)
 }
 
 var config = {
   draggable: true,
-  position: '8/8/8/8/8/8/8/1N6',
+  position: startFen,
+  // position: 'start',
   onDrop: onDrop,
   // onDragStart: onDragStart,
   // onMouseoutSquare: onMouseoutSquare,
