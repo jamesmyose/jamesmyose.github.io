@@ -1771,7 +1771,6 @@ var Chess = function(fen) {
         move_obj = move_from_san(move, sloppy)
       } else if (typeof move === 'object') {
         var moves = generate_moves()
-        console.log(moves)
 
         /* convert the pretty move object to an ugly move object */
         for (var i = 0, len = moves.length; i < len; i++) {
@@ -1891,23 +1890,6 @@ var Chess = function(fen) {
           return {fen: fen, comment: comment};
         });
     },
-
-    // added:
-    make_move: function(move) {
-      console.log(board)
-      make_move({from: move.source, to: move.target})
-    },
-    update: function(fen) {
-      update_setup(fen)
-      console.log(fen)
-    },
-    stuff: function(object) {
-      var first_sq = SQUARES.a8
-      var last_sq = SQUARES.h1
-      for (var i = first_sq; i <= last_sq; i++) {
-
-      }
-    }
   }
 }
 
