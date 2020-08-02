@@ -3,10 +3,16 @@
 /* Issues:
 If a piece just got moved, highlighting bugs if another piece is moved too quickly after the first piece
 Highlighting doesn't work with king
-Highlighting only works for white pieces
+Highlighting only works for white pieces, FIXED
 Highlighting only works for one piece
 Invisible Knights don't get removed after highlighting
+  queen moves interfere with each other
 Castling, en passant, and promotion don't work
+Website Looks bad on mobile
+
+Ideas:
+Make animation for each move
+add numbers to highlighted squares
 */
 
 /*
@@ -88,7 +94,7 @@ function onDrop (source, target, piece) {
   removeGreySquares()
 }
 
-function highlight (square, numMoves, piece) {
+function highlight (square, numMoves, piece, color) {
 
   // highlight the square they moused over
   greySquare(square, numMoves)
@@ -108,10 +114,11 @@ function highlight (square, numMoves, piece) {
   */
 
   numMoves++
-  console.log(piece)
   for (var i = 0; i < moves.length; i++) {
-    game.put({type: piece, color: 'w'}, moves[i].to)
-    setTimeout(highlight, 500, moves[i].to, numMoves, piece)
+    game.put({type: piece, color: color}, moves[i].to)
+    // function doesn't work without delay because it runs the top path all the way through before any others
+    setTimeout(highlight, 1, moves[i].to, numMoves, piece, color)
+
   }
 
   // work on later: visual animation for moving knight to squares
@@ -127,18 +134,27 @@ function onMouseoverSquare (square, piece) {
 }
 
 function onSnapEnd (draggedPieceSource, square, draggedPiece, currentPosition) {
-  var currentBoard = board.fen().concat(' w - - 0 1')
-  game.load(currentBoard)
 
   // chessboard.js has different notation (e.g. white knight is wN instead of n)
-  var piece = draggedPiece.substr(1).toLowerCase();
+  var piece = draggedPiece.charAt(1).toLowerCase();
+  var color = draggedPiece.charAt(0);
 
-  highlight (square, startNumMoves, piece)
+  var currentBoard
+  if (color === 'w') {
+    currentBoard = board.fen().concat(' w - - 0 1')
+  }
+  else {
+    currentBoard = board.fen().concat(' b - - 0 1')
+  }
+  game.load(currentBoard)
+
+  highlight (square, startNumMoves, piece, color)
 }
 
 function onSnapbackEnd (draggedPiece, square) {
-  var piece = draggedPiece.substr(1).toLowerCase();
-  highlight (square, startNumMoves, piece)
+  var piece = draggedPiece.charAt(1).toLowerCase();
+  var color = draggedPiece.charAt(0);
+  highlight (square, startNumMoves, piece, color)
 }
 
 var config = {
