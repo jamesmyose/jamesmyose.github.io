@@ -13,6 +13,8 @@ Website Looks bad on mobile
 Ideas:
 Make animation for each move
 add numbers to highlighted squares
+color squares that cant be reached with a different color
+add target square to find how many moves to that square
 */
 
 /*
@@ -24,7 +26,7 @@ var config = {
 }
 var board = Chessboard('myBoard', config);
 */
-var startFen = '8/8/8/8/8/8/8/1N6'
+// var startFen = '8/8/8/8/8/8/8/1N6'
 var startFen = "start"
 
 var board = null
@@ -41,7 +43,7 @@ var whiteSquareGrey = '#a9a9a9'
 var blackSquareGrey = '#696969'
 
 // for coloring:
-const startNumMoves = 0
+//const startLayer = 0
 var colors = {
   0: '#6A9946',
   1: '#8AA946',
@@ -75,7 +77,7 @@ function removeGreySquares () {
   $('#myBoard .square-55d63').css('background', '')
 }
 
-function greySquare (square, numMoves) {
+function greySquare (square, layer) {
   var $square = $('#myBoard .square-' + square)
 
   /*
@@ -87,17 +89,51 @@ function greySquare (square, numMoves) {
   }
   */
 
-  $square.css('background', colors[numMoves])
+  $square.css('background', colors[layer])
 }
 
 function onDrop (source, target, piece) {
   removeGreySquares()
 }
 
-function highlight (square, numMoves, piece, color) {
+function addToArray (square, piece, color) {
+  var arr = []
+  const startLayer = 0
+  arr.push ({square: square, layer: startLayer, piece: piece, color: color})
+  helper (arr, startLayer)
+
+  for (var i = 0; i < arr.length; i++) {
+    greySquare(arr[i].square, arr[i].layer)
+  }
+}
+
+function helper (arr, distance) {
+  for (var i = 0; i < arr.length; i++) {
+    if (arr[i].layer === distance) {
+
+      game.put({type: arr[i].piece, color: arr[i].color}, arr[i].square)
+      var moves = game.moves({
+        square: arr[i].square,
+        verbose: true,
+        legal: false,
+      })
+      game.remove (arr[i].square)
+
+      // need to make this push unique
+      for (var j = 0; j < moves.length; j++) {
+        arr.push({square: moves[j].to, layer: distance + 1, piece: arr[i].piece, color: arr[i].color})
+      }
+    }
+  }
+  helper (arr, distance + 1)
+  console.log(arr)
+}
+
+/*
+function highlight (square, layer, piece, color) {
 
   // highlight the square they moused over
-  greySquare(square, numMoves)
+  greySquare(square, layer)
 
   // get list of possible moves for this square
   var moves = game.moves({
@@ -106,18 +142,16 @@ function highlight (square, numMoves, piece, color) {
     legal: false,
   })
 
-  /*
   // highlight the possible squares for this piece
-  for (var i = 0; i < moves.length; i++) {
-    setTimeout(greySquare, 1000, moves[i].to)
-  }
-  */
+  // for (var i = 0; i < moves.length; i++) {
+    // setTimeout(greySquare, 1000, moves[i].to)
+  // }
 
-  numMoves++
+  layer++
   for (var i = 0; i < moves.length; i++) {
     game.put({type: piece, color: color}, moves[i].to)
     // function doesn't work without delay because it runs the top path all the way through before any others
-    setTimeout(highlight, 1, moves[i].to, numMoves, piece, color)
+    setTimeout(highlight, 1, moves[i].to, layer, piece, color)
 
   }
 
@@ -128,6 +162,7 @@ function highlight (square, numMoves, piece, color) {
   // exit if there are no moves available for this square
   if (moves.length === 0) return
 }
+*/
 
 function onMouseoverSquare (square, piece) {
   // highlight (square)
@@ -148,13 +183,13 @@ function onSnapEnd (draggedPieceSource, square, draggedPiece, currentPosition) {
   }
   game.load(currentBoard)
 
-  highlight (square, startNumMoves, piece, color)
+  highlight (square, piece, color)
 }
 
 function onSnapbackEnd (draggedPiece, square) {
   var piece = draggedPiece.charAt(1).toLowerCase();
   var color = draggedPiece.charAt(0);
-  highlight (square, startNumMoves, piece, color)
+  highlight (square, piece, color)
 }
 
 var config = {
