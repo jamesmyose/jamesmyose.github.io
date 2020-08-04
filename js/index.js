@@ -1,20 +1,25 @@
 // Knight Move Visualizer
 
 /* Issues:
-If a piece just got moved, highlighting bugs if another piece is moved too quickly after the first piece
-Highlighting doesn't work with king
-Highlighting only works for white pieces, FIXED
+FIXED: If a piece just got moved, highlighting bugs if another piece is moved too quickly after the first piece
+FIXED: Highlighting doesn't work with king
+FIXED: Highlighting only works for white pieces
 Highlighting only works for one piece
-Invisible Knights don't get removed after highlighting
-  queen moves interfere with each other
+FIXED: Invisible Knights don't get removed after highlighting
+  FIXED: queen moves interfere with each other
 Castling, en passant, and promotion don't work
+  castling: putting KQkq into the fen concat bugs positions where there is no king and rook
+  UNNECESSARY: en passant
 Website Looks bad on mobile
+color of coordinates on bottom and left need to be the same color
 
 Ideas:
-Make animation for each move
+Make animation with pieces for each move
 add numbers to highlighted squares
-color squares that cant be reached with a different color
+color unreachable squares with a different color
+color self-color occupied squares with a different color
 add target square to find how many moves to that square
+DONE: no animation button
 */
 
 // var startFen = '8/8/8/8/8/8/8/1N6'
@@ -34,7 +39,8 @@ var whiteSquareGrey = '#a9a9a9'
 var blackSquareGrey = '#696969'
 
 // for coloring:
-//const startLayer = 0
+var timeouts = []
+var animation = true
 var colors = {
   0: '#6A9946',
   1: '#8AA946',
@@ -69,13 +75,22 @@ function onDrop (source, target, piece) {
 }
 
 function highlight (square, piece, color) {
+  removeGreySquares()
+  for (var i = 0; i < timeouts.length; i++) {
+    clearTimeout(timeouts[i])
+  }
   var arr = []
   arr.push ({square: square, layer: 0, piece: piece, color: color})
 
   helper (arr, 0)
 
   for (var i = 0; i < arr.length; i++) {
-    greySquare(arr[i].square, arr[i].layer)
+    if (animation) {
+      timeouts.push(setTimeout(greySquare, i * 15, arr[i].square, arr[i].layer))
+    }
+    else {
+      greySquare(arr[i].square, arr[i].layer)
+    }
   }
 }
 
@@ -83,7 +98,6 @@ function helper (arr, distance) {
   var added = false
   for (var i = 0; i < arr.length; i++) {
     if (distance === arr[i].layer) {
-
       game.put({type: arr[i].piece, color: arr[i].color}, arr[i].square)
       var moves = game.moves({
         square: arr[i].square,
@@ -110,58 +124,9 @@ function helper (arr, distance) {
     }
   }
   if (added) {
-    console.log(arr)
     helper (arr, distance + 1)
   }
-
-  /*
-
-  var uniqueArr = []
-  for (var i = 0; i < arr.length; i++) {
-    var current = arr[i]
-    console.log(current)
-    if (uniqueArr.indexOf(current) < 0) {
-      uniqueArr.push(current)
-    }
-  }
-  */
-
 }
-
-/*
-function highlight (square, layer, piece, color) {
-
-  // highlight the square they moused over
-  greySquare(square, layer)
-
-  // get list of possible moves for this square
-  var moves = game.moves({
-    square: square,
-    verbose: true,
-    legal: false,
-  })
-
-  // highlight the possible squares for this piece
-  // for (var i = 0; i < moves.length; i++) {
-    // setTimeout(greySquare, 1000, moves[i].to)
-  // }
-
-  layer++
-  for (var i = 0; i < moves.length; i++) {
-    game.put({type: piece, color: color}, moves[i].to)
-    // function doesn't work without delay because it runs the top path all the way through before any others
-    setTimeout(highlight, 1, moves[i].to, layer, piece, color)
-
-  }
-
-  // work on later: visual animation for moving knight to squares
-  // updateFen = game.fen().substring(0, game.fen().length - 1)
-  // board.position(updateFen, true)
-
-  // exit if there are no moves available for this square
-  if (moves.length === 0) return
-}
-*/
 
 function onMouseoverSquare (square, piece) {
   // highlight (square)
@@ -193,7 +158,6 @@ function onSnapbackEnd (draggedPiece, square) {
 var config = {
   draggable: true,
   position: startFen,
-  // position: 'start',
   onDrop: onDrop,
   // onDragStart: onDragStart,
   // onMouseoutSquare: onMouseoutSquare,
@@ -204,7 +168,23 @@ var config = {
 board = Chessboard('myBoard', config)
 
 $('#setKnight').on('click', function () {
+  removeGreySquares()
   board.position('8/8/8/8/8/8/8/1N6')
 })
 
-$('#setStartBtn').on('click', board.start)
+$('#setStartBtn').on('click', function() {
+  removeGreySquares()
+  board.start()
+})
+$('#animationBtn').on('click', changeText)
+
+function changeText() {
+  animation = !animation
+  var text = document.getElementById('animationBtn').innerHTML
+  if (text === 'No Animation') {
+    document.getElementById('animationBtn').innerHTML = 'Animation'
+  }
+  else {
+    document.getElementById('animationBtn').innerHTML = 'No Animation'
+  }
+}
