@@ -80,6 +80,7 @@ function highlight (square, piece, color) {
 }
 
 function helper (arr, distance) {
+  var added = false
   for (var i = 0; i < arr.length; i++) {
     if (distance === arr[i].layer) {
 
@@ -92,7 +93,7 @@ function helper (arr, distance) {
       game.remove (arr[i].square)
 
       // need to make this push unique
-      var added = false
+
       for (var j = 0; j < moves.length; j++) {
         var duplicate = false
         for (var k = 0; k < arr.length; k++) {
@@ -106,11 +107,11 @@ function helper (arr, distance) {
           added = true
         }
       }
-      if (added) {
-        console.log(arr)
-        helper (arr, distance + 1)
-      }
     }
+  }
+  if (added) {
+    console.log(arr)
+    helper (arr, distance + 1)
   }
 
   /*
