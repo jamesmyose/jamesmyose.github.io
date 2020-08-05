@@ -103,6 +103,30 @@ body{
     float: left;
 }
 
+.spare-pieces-7492f {
+  background-color: #2B7A78;
+
+  /* this width because there is some padding implemented in the html*/
+  width: 345px;
+  padding-top: 0.25em;
+  padding-bottom: 0.25em;
+}
+
+.square-55d63 {
+  text-align: center;
+  position: relative;
+}
+
+.numbers {
+  position: absolute;
+  height: 49px;
+  width: 100%;
+  line-height: 49px;
+  font-size: 32px;
+  color: #ffffff;
+  text-align: center;
+  font-weight: bold;
+}
 /*
 .splitleft{
 

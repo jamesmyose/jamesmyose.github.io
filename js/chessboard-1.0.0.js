@@ -1421,6 +1421,11 @@
     // Public Methods
     // -------------------------------------------------------------------------
 
+    // added by James Myose
+    widget.draw = function () {
+      drawPositionInstant()
+    }
+
     // clear the board
     widget.clear = function (useAnimation) {
       widget.position({}, useAnimation)

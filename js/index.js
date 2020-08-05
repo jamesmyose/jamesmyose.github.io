@@ -1,4 +1,4 @@
-// Knight Move Visualizer
+// Chess Move Visualizer
 
 /* Issues:
 FIXED: If a piece just got moved, highlighting bugs if another piece is moved too quickly after the first piece
@@ -12,10 +12,13 @@ Castling, en passant, and promotion don't work
   UNNECESSARY: en passant
 Website Looks bad on mobile
 color of coordinates on bottom and left need to be the same color
+FIXED: when animation is false, coloring on mouseover doesn't work
+multiple kings on the same color don't work
+probably need to add a line that waits until the document is loaded
 
 Ideas:
 Make animation with pieces for each move
-add numbers to highlighted squares
+DONE: add numbers to highlighted squares
 color unreachable squares with a different color
 color self-color occupied squares with a different color
 add target square to find how many moves to that square
@@ -43,7 +46,8 @@ var blackSquareGrey = '#696969'
 // for coloring:
 var timeouts = []
 var animation = true
-var mouseover = false
+var mouseover = true
+var showNumbers = false
 var colors = {
   0: '#6A9946',
   1: '#8AA946',
@@ -52,25 +56,54 @@ var colors = {
   4: '#E99946',
   5: '#E97946',
   6: '#E95946',
+  7: '#CA5966',
+  8: '#AA5986'
 }
 
 function removeColor () {
   $('#myBoard .square-55d63').css('background', '')
 }
 
+function removeNumbers() {
+  var currentNumbers = document.getElementsByClassName('numbers')
+  for (var i = 0; i < currentNumbers.length; i++) {
+    currentNumbers[i].innerHTML = ''
+  }
+}
+
+function numberText() {
+  for (var i = 0; i < game.SQUARES.length; i++) {
+    var div = document.createElement('div')
+    div.innerHTML = ''
+    div.className = 'numbers'
+    div.id = game.SQUARES[i]
+    document.getElementsByClassName('square-' + game.SQUARES[i])[0].appendChild(div)
+  }
+}
+
+function addNumbers (square, layer, color) {
+  if (layer > 0) {
+    document.getElementById(square).innerHTML = layer
+    if (color === 'w') {
+      document.getElementById(square).style.color = '#FFFFFF'
+    }
+    else {
+      document.getElementById(square).style.color = '#000000'
+    }
+  }
+}
+
 function addColor (square, layer) {
   var $square = $('#myBoard .square-' + square)
-
-  /*
-  // var background = whiteSquareGrey
-  var background = whiteColors[rank]
-  if ($square.hasClass('black-3c85d')) {
-    // background = blackSquareGrey
-    background = blackColors[rank]
+  if (layer > 8) {
+    var r = Math.max(17, 170 - 34 * (layer - 8))
+    var g = Math.max(9, 89 - (18 * (layer - 8)))
+    var b = Math.max(13, 134 - (27 * (layer - 8)))
+    $square.css('background', 'rgb(' + r + ',' + g + ',' + b + ')')
   }
-  */
-
-  $square.css('background', colors[layer])
+  else {
+    $square.css('background', colors[layer])
+  }
 }
 
 function greySquare (square) {
@@ -84,30 +117,30 @@ function greySquare (square) {
   $square.css('background', background)
 }
 
-function onDrop (source, target, piece) {
-  removeColor()
-}
-
 function highlight (square, piece, color) {
   removeColor()
+  removeNumbers()
   for (var i = 0; i < timeouts.length; i++) {
     clearTimeout(timeouts[i])
   }
   var arr = []
   arr.push ({square: square, layer: 0, piece: piece, color: color})
 
-  helper (arr, 0)
+  helper(arr, 0)
 
   for (var i = 0; i < arr.length; i++) {
     if (animation) {
       timeouts.push(setTimeout(addColor, i * 15, arr[i].square, arr[i].layer))
+      if (showNumbers) timeouts.push(setTimeout(addNumbers, i * 15, arr[i].square, arr[i].layer, color))
     }
     else {
       addColor(arr[i].square, arr[i].layer)
+      if (showNumbers) addNumbers(arr[i].square, arr[i].layer, color)
     }
   }
 
   // making the unreachable squares grey
+
   /*
   // find squares not included in possible moves
   var missing = []
@@ -126,7 +159,7 @@ function highlight (square, piece, color) {
 
   // add color
   for (var i = 0; i < missing.length; i++) {
-    timeouts.push(setTimeout(greySquare, arr.length * 15, missing[i]))
+    timeouts.push(setTimeout(greySquare, i * 15, missing[i]))
   }
   */
 }
@@ -160,7 +193,8 @@ function helper (arr, distance) {
         }
 
         // push to arr if not a duplicate
-        if (!duplicate) {
+        // for some reason, if pawn is on the 8th rank, game.moves returns just the letter of the file as a valid move
+        if (!duplicate && (moves[j].to.length > 1)) {
           arr.push({square: moves[j].to, layer: distance + 1, piece: arr[i].piece, color: arr[i].color})
           added = true
         }
@@ -174,7 +208,7 @@ function helper (arr, distance) {
   }
 }
 
-// helper method for the three below
+// two helper methods for the three methods below
 function resetGamePos (color) {
   var currentBoard
   if (color === 'w') {
@@ -186,27 +220,32 @@ function resetGamePos (color) {
   game.load(currentBoard)
 }
 
+// check if the piece dropped or mousedover is the same as before
+function deepCompare (piece1, piece2) {
+  if (piece1.square === piece2.square && piece1.piece === piece2.piece && piece1.color === piece2.color) {
+    return true
+  }
+  else {
+    return false
+  }
+}
+
 var previousPiece = {square: null, piece: null, color: null}
 function onMouseoverSquare (square, draggedPiece) {
-  if (!draggedPiece) {return}
-  var piece = draggedPiece.charAt(1).toLowerCase();
-  var color = draggedPiece.charAt(0);
+  board.draw()
+  if (mouseover) {
+    if (!draggedPiece) {return}
+    var piece = draggedPiece.charAt(1).toLowerCase();
+    var color = draggedPiece.charAt(0);
 
-  currentPiece = {square: square, piece: piece, color: color}
+    currentPiece = {square: square, piece: piece, color: color}
 
-  function deepCompare (piece1, piece2) {
-    if (piece1.square === piece2.square && piece1.piece === piece2.piece && piece1.color === piece2.color) {
-      return true
+    if (!deepCompare(previousPiece, currentPiece))  {
+      previousPiece = currentPiece
+      resetGamePos(color)
+
+      highlight (square, piece, color)
     }
-    else {
-      return false
-    }
-  }
-  if (!deepCompare(previousPiece, currentPiece))  {
-    previousPiece = currentPiece
-    resetGamePos(color)
-
-    highlight (square, piece, color)
   }
 }
 
@@ -215,52 +254,81 @@ function onSnapEnd (draggedPieceSource, square, draggedPiece, currentPosition) {
   var piece = draggedPiece.charAt(1).toLowerCase();
   var color = draggedPiece.charAt(0);
 
+  currentPiece = {square: square, piece: piece, color: color}
+
+  // this should probably be included just for mobile
+  /*
+  if (!deepCompare(previousPiece, currentPiece))  {
+    previousPiece = currentPiece
+    resetGamePos(color)
+
+    highlight (square, piece, color)
+  }
+  */
+
   resetGamePos(color)
+  previousPiece = currentPiece
 
   highlight (square, piece, color)
 }
 
+// unnecessary when spare pieces are on the board
 function onSnapbackEnd (draggedPiece, square) {
   var piece = draggedPiece.charAt(1).toLowerCase();
   var color = draggedPiece.charAt(0);
 
-  resetGamePos(color)
+  currentPiece = {square: square, piece: piece, color: color}
 
-  highlight (square, piece, color)
-}
+  if (!deepCompare(previousPiece, currentPiece))  {
+    previousPiece = currentPiece
+    resetGamePos(color)
 
-function setup (onDrop, onMouseoverSquare, startFen) {
-  var config = {
-    draggable: true,
-    position: startFen,
-    onDrop: onDrop,
-    // onDragStart: onDragStart,
-    // onMouseoutSquare: onMouseoutSquare,
-    onMouseoverSquare: onMouseoverSquare,
-    onSnapEnd: onSnapEnd,
-    onSnapbackEnd: onSnapbackEnd,
+    highlight (square, piece, color)
   }
-  board = Chessboard('myBoard', config)
 }
-setup(onDrop, null, startFen)
+
+var config = {
+  draggable: true,
+  position: startFen,
+  // onDrop: onDrop,
+  // onDragStart: onDragStart,
+  // onMouseoutSquare: onMouseoutSquare,
+  onMouseoverSquare: onMouseoverSquare,
+  onSnapEnd: onSnapEnd,
+  onSnapbackEnd: onSnapbackEnd,
+  sparePieces: true,
+  dropOffBoard: 'trash'
+}
+board = Chessboard('myBoard', config)
+numberText()
 
 // change position to just knight (button)
 $('#setKnight').on('click', function () {
   removeColor()
+  removeNumbers()
+
+  // set both board and game
   board.position('8/8/8/8/8/8/8/1N6')
+  resetGamePos('w')
 })
 
 // change position start (button)
 $('#setStartBtn').on('click', function() {
   removeColor()
+
+  removeNumbers()
+
+  // set both board and game
   board.start()
+  resetGamePos('w')
 })
 
 // toggle color animation (button)
 $('#animationBtn').on('click', changeAnimationText)
-
 function changeAnimationText() {
   animation = !animation
+
+  // change button text back and forth
   var text = document.getElementById('animationBtn').innerHTML
   if (text === 'No Animation') {
     document.getElementById('animationBtn').innerHTML = 'Animation'
@@ -268,13 +336,20 @@ function changeAnimationText() {
   else {
     document.getElementById('animationBtn').innerHTML = 'No Animation'
   }
+
+  // if going from no animation to animation, trigger highlighting
+  resetGamePos(previousPiece.color)
+  if (animation && (previousPiece.square !== null) && game.get(previousPiece.square) !== null) {
+    highlight(previousPiece.square, previousPiece.piece, previousPiece.color)
+  }
 }
 
 // toggle animation trigger (button)
 $('#mouseover').on('click', changeMouseoverText)
-
 function changeMouseoverText() {
   mouseover = !mouseover
+
+  // change button text back and forth
   var text = document.getElementById('mouseover').innerHTML
   if (text === 'Animation on Mouseover') {
     document.getElementById('mouseover').innerHTML = 'Animation on Drop'
@@ -282,7 +357,39 @@ function changeMouseoverText() {
   else {
     document.getElementById('mouseover').innerHTML = 'Animation on Mouseover'
   }
-  if (mouseover) {onDrop = null}
-  else {onMouseoverSquare = null}
-  setup(onDrop, onMouseoverSquare, board.fen())
+}
+
+// clear board (button)
+$('#clearBoardBtn').on('click', clear)
+function clear() {
+  // clear board using animation
+  board.clear(true)
+
+  // clear game to avoid errors
+  game.clear()
+
+  // prevent leftover color
+  removeColor()
+
+  removeNumbers()
+}
+
+$('#showNumbers').on('click', toggleNumbers)
+function toggleNumbers() {
+  showNumbers = !showNumbers
+
+  // change button text back and forth
+  var text = document.getElementById('showNumbers').innerHTML
+  if (text === 'Show Number of Moves') {
+    document.getElementById('showNumbers').innerHTML = 'Hide Number of Moves'
+  }
+  else {
+    document.getElementById('showNumbers').innerHTML = 'Show Number of Moves'
+  }
+
+  resetGamePos(previousPiece.color)
+  if ((previousPiece.square !== null) && game.get(previousPiece.square) !== null) {
+    console.log('here')
+    highlight(previousPiece.square, previousPiece.piece, previousPiece.color)
+  }
 }
