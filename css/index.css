@@ -15,6 +15,14 @@ F4D35E
 EE964B
 */
 
+@media only screen and (min-width: 1025px) {
+  html {
+    width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
 body{
     line-height: 1em;
     margin: 0;
@@ -30,7 +38,7 @@ body{
     font-family: Arial, Helvetica, sans-serif;
     */
     font-family: "Verdana", "Geneva", sans-serif;
-    font-size: 16px;
+    font-size: calc(1vw);
 }
 
 .container{
@@ -99,11 +107,13 @@ body{
 }
 
 #myBoard{
+  padding: 5px 10px;
   margin: 1em;
-  width: 49%;
+  width: 35%;
   max-width: 90%;
   white-space: nowrap;
   float: left;
+  background-color: #2B7A78;
   /*margin: 0 auto;*/
 }
 
@@ -115,24 +125,26 @@ body{
 
 .spare-pieces-7492f {
   margin: 0 auto;
-  background-color: #2B7A78;
   box-sizing: border-box;
 }
 
 .square-55d63 {
-  text-align: center;
   position: relative;
 }
 
 .numbers {
   position: absolute;
-  height: 49px;
+  height: 100%;
   width: 100%;
-  line-height: 49px;
-  font-size: 32px;
+  line-height: 100%;
+  font-size: 2em;
   color: #ffffff;
   text-align: center;
   font-weight: bold;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 button {
