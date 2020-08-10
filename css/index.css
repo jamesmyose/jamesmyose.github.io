@@ -129,10 +129,11 @@ body{
   /*margin: 0 auto;*/
 }
 
-@media only screen and (max-width: 320px) {
+@media only screen and (max-aspect-ratio: 1/1) {
   #myBoard {
     float: none;
     width: 90vh;
+    margin: 1em auto;
   }
 }
 
