@@ -15,6 +15,7 @@ color of coordinates on bottom and left need to be the same color
 FIXED: when animation is false, coloring on mouseover doesn't work
 multiple kings on the same color don't work
 probably need to add a line that waits until the document is loaded
+font of number of moves isn't adaptive to size of board
 
 Ideas:
 Make animation with pieces for each move
@@ -25,10 +26,8 @@ add target square to find how many moves to that square
 DONE: animation button
 */
 
-// var startFen = '8/8/8/8/8/8/8/1N6'
-
-
-var startFen = "start"
+var startFen = '8/8/8/8/8/8/8/1N6'
+// var startFen = 'start'
 
 var board = null
 var game = null
@@ -130,8 +129,8 @@ function highlight (square, piece, color) {
 
   for (var i = 0; i < arr.length; i++) {
     if (animation) {
-      timeouts.push(setTimeout(addColor, i * 15, arr[i].square, arr[i].layer))
-      if (showNumbers) timeouts.push(setTimeout(addNumbers, i * 15, arr[i].square, arr[i].layer, color))
+      timeouts.push(setTimeout(addColor, i * 10, arr[i].square, arr[i].layer))
+      if (showNumbers) timeouts.push(setTimeout(addNumbers, i * 10, arr[i].square, arr[i].layer, color))
     }
     else {
       addColor(arr[i].square, arr[i].layer)
@@ -210,13 +209,7 @@ function helper (arr, distance) {
 
 // two helper methods for the three methods below
 function resetGamePos (color) {
-  var currentBoard
-  if (color === 'w') {
-    currentBoard = board.fen().concat(' w - - 0 1')
-  }
-  else {
-    currentBoard = board.fen().concat(' b - - 0 1')
-  }
+  var currentBoard = board.fen().concat(' ', color, ' - - 0 1')
   game.load(currentBoard)
 }
 
@@ -301,6 +294,29 @@ var config = {
 }
 board = Chessboard('myBoard', config)
 numberText()
+changeWidth()
+
+
+function changeWidth() {
+  var width = 4
+  var containerWidth = parseInt(document.getElementById('myBoard').offsetWidth, 10)
+
+  // defensive, prevent infinite loop
+  if (!containerWidth || containerWidth <= 0) {
+    return 0
+  }
+
+  // remove the two pixels that are guaranteed
+  containerWidth -= 2
+  containerWidth -= containerWidth % 8
+
+  width += containerWidth
+
+  var elements = document.getElementsByClassName("spare-pieces-7492f")
+  for (var i = 0; i < elements.length; i++) {
+    elements[i].style.width = width + 'px';
+  }
+}
 
 // change position to just knight (button)
 $('#setKnight').on('click', function () {

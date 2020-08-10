@@ -763,7 +763,8 @@
       }
 
       // pad one pixel
-      var boardWidth = containerWidth - 1
+      // changed by JamesMyose from - 1 to - 4 because -1 is wacky
+      var boardWidth = containerWidth - 4
 
       while (boardWidth % 8 !== 0 && boardWidth > 0) {
         boardWidth = boardWidth - 1

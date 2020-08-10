@@ -16,7 +16,7 @@ EE964B
 */
 
 body{
-    line-height: 1.2em;
+    line-height: 1em;
     margin: 0;
 
     background-color: #3AAFA9;
@@ -99,17 +99,24 @@ body{
 }
 
 #myBoard{
-    padding: 1em;
-    float: left;
+  margin: 1em;
+  width: 49%;
+  max-width: 90%;
+  white-space: nowrap;
+  float: left;
+  /*margin: 0 auto;*/
+}
+
+.board-b72b1{
+  border: 2px solid #404040;
+  box-sizing: content-box;
+  margin: 0 auto;
 }
 
 .spare-pieces-7492f {
+  margin: 0 auto;
   background-color: #2B7A78;
-
-  /* this width because there is some padding implemented in the html*/
-  width: 345px;
-  padding-top: 0.25em;
-  padding-bottom: 0.25em;
+  box-sizing: border-box;
 }
 
 .square-55d63 {
@@ -126,6 +133,12 @@ body{
   color: #ffffff;
   text-align: center;
   font-weight: bold;
+}
+
+button {
+  margin: 1em;
+  padding: 0.25em;
+  display: block;
 }
 /*
 .splitleft{

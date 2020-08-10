@@ -11,6 +11,8 @@
         <script type="text/javascript" src="js/chessboard-1.0.0.js"></script>
         <script type="text/javascript" src="js/chess.js"></script>
 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
         <link rel="icon" href="pineapple.png">
     </head>
     <body>
@@ -28,10 +30,11 @@
                 <li><a href="https://lichess.org/@/JamesMyose" target = "_blank">Lichess</a></li>
             </ul>
         </div>
-
+        <!--
         <section id="showcase">
             <p>James Myose is a undergraduate student at Kansas State University and is studying Economics and Mathematics. This is mainly a test website to learn some basic web development. Click on the links above.</p>
         </section>
+        -->
         <!--
         <div class="main">
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
@@ -40,19 +43,20 @@
         -->
 
         <!-- Board Setup -->
-        <div id="myBoard" style="width: 400px"></div>
+        <div id="myBoard"></div>
 
-        <div class="main">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <span class="main">
+            <p>In chess, the movement of the knight is usually the hardest to grasp.</p>
+        </span>
+
+        <div id="options">
+          <button id="setKnight">Knight</button>
+          <button id="setStartBtn">Start Position</button>
+          <button id="animationBtn">No Animation</button>
+          <button id="mouseover">Animation on Drop</button>
+          <button id="clearBoardBtn">Clear Board</button>
+          <button id="showNumbers">Show Number of Moves</button>
         </div>
-
-        <button id="setKnight">Knight</button>
-        <button id="setStartBtn">Start Position</button>
-        <button id="animationBtn">No Animation</button>
-        <button id="mouseover">Animation on Drop</button>
-        <button id="clearBoardBtn">Clear Board</button>
-        <button id="showNumbers">Show Number of Moves</button>
-
 
         <script src = "js/index.js"></script>
     </body>
