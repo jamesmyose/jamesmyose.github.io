@@ -46,7 +46,7 @@ body{
 }
 
 @media only screen and (min-width: 1025px) {
-  html {
+  #main {
     width: 1000px;
     margin-left: auto;
     margin-right: auto;
@@ -113,10 +113,11 @@ body{
     font-size: 30px;
 }
 
-.main{
-    padding: 0 1em;
+.mainText{
+    padding: 1em 0 0 0;
     color: #fff;
 }
+
 
 #myBoard{
   padding: 5px 10px;
@@ -130,10 +131,23 @@ body{
 }
 
 @media only screen and (max-aspect-ratio: 1/1) {
+  .mainText p {
+    margin: 0;
+  }
+
+  .mainText {
+    padding: 0 0.5em;
+    margin-bottom: 0.5em;
+  }
+
   #myBoard {
     float: none;
-    width: 90vw;
-    margin: 0 auto;
+    width: 80vw;
+    margin: 0.5em auto;
+  }
+
+  #options {
+    margin: 0 0.5em;
   }
 }
 
@@ -167,11 +181,6 @@ body{
   align-items: center;
 }
 
-button {
-  margin: 1em;
-  padding: 0.25em;
-  display: block;
-}
 /*
 .splitleft{
 
