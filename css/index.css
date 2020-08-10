@@ -132,8 +132,8 @@ body{
 @media only screen and (max-aspect-ratio: 1/1) {
   #myBoard {
     float: none;
-    width: 90vh;
-    margin: 1em auto;
+    width: 90vw;
+    margin: 0 auto;
   }
 }
 

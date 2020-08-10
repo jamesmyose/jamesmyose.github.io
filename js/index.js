@@ -298,7 +298,6 @@ changeFontSize()
 
 function changeFontSize() {
   squareWidth = document.getElementsByClassName('numbers')[0].offsetWidth
-  console.log(squareWidth)
 
   var elements = document.getElementsByClassName("numbers")
   for (var i = 0; i < elements.length; i++) {
