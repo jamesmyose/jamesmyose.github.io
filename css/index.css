@@ -130,27 +130,6 @@ body{
   /*margin: 0 auto;*/
 }
 
-@media only screen and (max-aspect-ratio: 1/1) {
-  .mainText p {
-    margin: 0;
-  }
-
-  .mainText {
-    padding: 0 0.5em;
-    margin-bottom: 0.5em;
-  }
-
-  #myBoard {
-    float: none;
-    width: 90vw;
-    margin: 0.5em auto;
-  }
-
-  #options {
-    margin: 0 0.5em;
-  }
-}
-
 .board-b72b1{
   border: 2px solid #404040;
   box-sizing: content-box;
@@ -179,6 +158,31 @@ body{
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+#options {
+  padding: 1em;
+}
+
+@media only screen and (max-aspect-ratio: 1/1) {
+  .mainText p {
+    margin: 0;
+  }
+
+  .mainText {
+    padding: 0 0.5em;
+    margin-bottom: 0.5em;
+  }
+
+  #myBoard {
+    float: none;
+    width: 90vw;
+    margin: 0.5em auto;
+  }
+
+  #options {
+    margin: 0 0.5em;
+  }
 }
 
 /*
