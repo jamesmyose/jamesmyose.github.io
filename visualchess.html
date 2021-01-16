@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>James Myose's Website</title>
+        <link rel="stylesheet" type="text/css" href="css/visualchess.css">
+
+        <!-- Board Setup Using chessboard.js-->
+        <link rel="stylesheet" href="css/chessboard-1.0.0.css">
+        <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+        <script type="text/javascript" src="js/chessboard-1.0.0.js"></script>
+        <script type="text/javascript" src="js/chess.js"></script>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="icon" href="pineapple.png">
+    </head>
+    <body>
+      <header id = "mainHead">
+          <div class="container">
+              <h1><a href="index.html">James Myose</a></h1>
+          </div>
+      </header>
+        <div id="nav">
+            <ul>
+                <li><a href="https://www.linkedin.com/in/james-myose-1650b1197/" target = "_blank">LinkedIn</a></li>
+                <!-- <li><a href="about.html">About Me</a></li> -->
+                <li><a href="mailto: jmyose@live.com">Email</a></li>
+                <li><a href="https://github.com/jamesmyose" target = "_blank">GitHub</a></li>
+                <li><a href="https://lichess.org/@/JamesMyose" target = "_blank">Lichess</a></li>
+            </ul>
+        </div>
+        <div id="main">
+
+          <!-- Board Setup -->
+          <div id="myBoard"></div>
+
+          <!--
+          <div class="mainText">
+              <p>In chess, the movement of the knight is usually the hardest to grasp.</p>
+          </div>
+          -->
+
+          <div id="options">
+            <button id="setKnight">Knight</button>
+            <button id="setStartBtn">Start Position</button>
+            <button id="animationBtn">No Animation</button>
+            <button id="mouseover">Animation on Drop</button>
+            <button id="clearBoardBtn">Clear Board</button>
+            <button id="showNumbers">Show Number of Moves</button>
+          </div>
+
+          <script src = "js/visualchess.js"></script>
+        </div>
+    </body>
+</html>
