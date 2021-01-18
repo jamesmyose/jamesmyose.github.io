@@ -1,85 +1,27 @@
-/*
-Colors:
-17252A
-215051
-2B7A78
-3AAFA9
-DEF2F1
-FFFFFF
-
-Alternative:
-1F271B
-19647E
-218A97
-F4D35E
-EE964B
-*/
-
-body{
-    line-height: 1em;
+html, body{
     margin: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #F6F6F6;
 
-    background-color: #3AAFA9;
-    /*
-    background-color: #c5c1c0;
-    background-color: #050401;
-    */
-
-    color: #fff;
-    /*
-    font-family: Arial, Helvetica, sans-serif;
-    */
-    font-family: "Verdana", "Geneva", sans-serif;
-    font-size: 1em;
-}
-
-@media only screen and (max-width: 768px) {
-  body {
-    font-size: 20px;
-  }
-}
-
-@media only screen and (max-width: 320px) {
-  body {
-    font-size: 10px;
-  }
-}
-
-@media only screen and (min-width: 1025px) {
-  #main {
-    width: 1000px;
-    margin-left: auto;
-    margin-right: auto;
-  }
+    color: #000;
+    font-family: sans-serif;
 }
 
 .container{
     margin: 0;
     padding-left: 1em;
     overflow: hidden;
-    background-color: #17252A;
-    /*
-    background-color: #0a1612;
-    background-color: #30BCED;
-    */
 }
 
 .container a{
-    color: #fff;
+    color: #388087;
     text-decoration: none;
 }
 
-#nav{
-	background-color: #215051;
-    /*
-    background-color:#f7ce3e;
-    background-color: #FC5130;
-    */
-}
-
 #nav ul{
-    margin: 0;
-    padding: 5px 1em;
+  margin: 1em 0;
+  padding: 0;
 	list-style: none;
 }
 
@@ -88,46 +30,20 @@ body{
 }
 
 #nav a{
-    padding-right: 15px;
-	color: #fff;
-	text-decoration: none;
+  padding-right: 15px;
+	color: #388087;
+  text-decoration: none;
+  font-size: 20px;
 }
 
-#showcase{
-    background-color: #2B7A78;
-    /*
-    background-color: #1a2930;
-    background-color: #2c3e50;
-    */
+#main{
+  display: flex;
 }
-
-#showcase p{
-    margin: 0;
-    padding: 20px 1em;
-    color: #fff;
-}
-
-#showcase h1{
-    margin: 0;
-    padding: 30px;
-    font-size: 30px;
-}
-
-.mainText{
-    padding: 1em 0 0 0;
-    color: #fff;
-}
-
 
 #myBoard{
-  padding: 5px 10px;
   margin: 1em;
-  width: 60vh;
-  max-width: 90%;
-  white-space: nowrap;
-  float: left;
-  background-color: #2B7A78;
-  /*margin: 0 auto;*/
+  width: 85vh;
+  height: 85vh;
 }
 
 .board-b72b1{
@@ -160,81 +76,115 @@ body{
   align-items: center;
 }
 
-#options {
-  padding: 1em;
+#content{
+  max-width: 50%;
 }
 
+#content h1{
+  margin: 0.5em 0;
+  color: #388087;
+}
+
+#mainText{
+  font-size: 20px;
+}
+
+#mainText a{
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+#mainText p{
+  margin: 0.5em 0;
+}
+
+#content h4{
+  font-size: 20px;
+  color: #388087;
+  margin-top: 1em;
+  margin-bottom: 0.25em;
+}
+
+#options{
+  font-size: 20px;
+  color: #388087;
+}
+
+#positions{
+  color: #000;
+}
+
+#positions a{
+  font-size: 20px;
+  margin: 0 2px;
+
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+#checks label{
+  font-size: 20px;
+  display: block;
+  color: #000;
+  width: fit-content;
+}
+
+/* Change text size for smaller screens */
+@media only screen and (max-width: 768px) {
+  body {
+    font-size: 20px;
+  }
+}
+
+@media only screen and (max-width: 320px) {
+  body {
+    font-size: 10px;
+  }
+}
+
+/* Change behavior for smaller screens */
 @media only screen and (max-aspect-ratio: 1/1) {
-  .mainText p {
-    margin: 0;
+  #main{
+    display: block;
   }
 
-  .mainText {
-    padding: 0 0.5em;
+  #content{
+    max-width: 100%;
+    margin: 0.5em;
+  }
+
+  #mainText {
     margin-bottom: 0.5em;
   }
 
   #myBoard {
     float: none;
     width: 90vw;
+    height: auto;
     margin: 0.5em auto;
+    padding: 5px 10px;
+    max-width: 90%;
+    white-space: nowrap;
   }
 
   #options {
-    margin: 0 0.5em;
+    margin-bottom: 1em;
   }
 }
 
 /*
-.splitleft{
+Old Colors:
+17252A
+215051
+2B7A78
+3AAFA9
+DEF2F1
+FFFFFF
 
-    position: relative;
-    max-width: 50%;
-    height: 30em;
-    z-index: 1;
-    top: 0;
-    overflow-x: hidden;
-
-    box-sizing: border-box;
-    left: 0;
-    float: left;
-    background-color: #F4D35E;
-    padding: 0 1em;
-
-}
-
-.splitright{
-    position: relative;
-    max-width: 50%;
-    height: 30em;
-    z-index: 1;
-    top: 0;
-    overflow-x: hidden;
-
-    box-sizing: border-box;
-    right: 0;
-    float: right;
-    background-color: #EE964B;
-    padding: 0 1em;
-}
-*/
-
-/*
-#nav{
-    background-color:#f7ce3e;
-}
-
-#nav ul{
-    list-style: none;
-    margin: 5px;
-}
-
-#nav li{
-    display: inline;
-}
-
-#nav a{
-    text-decoration: none;
-    color: #fff;
-}
+Alternative:
+1F271B
+19647E
+218A97
+F4D35E
+EE964B
 */
