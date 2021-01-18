@@ -414,8 +414,14 @@ function clear() {
 
 // toggling whether the number of moves are shown on the colored squared
 $('#showNumbers').on('click', toggleNumbers)
-function toggleNumbers(text) {
-  showNumbers = !showNumbers
+function toggleNumbers() {
+  var text = document.getElementById('showNumbersChecked').checked
+  if (text === false) {
+    showNumbers = false
+  }
+  if (text === true) {
+    showNumbers = true
+  }
 
   resetGamePos(previousPiece.color)
   if (previousPiece.square !== null && game.get(previousPiece.square) !== null) {
